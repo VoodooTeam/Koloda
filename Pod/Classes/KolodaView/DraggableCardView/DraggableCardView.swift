@@ -444,6 +444,9 @@ public class DraggableCardView: UIView, UIGestureRecognizerDelegate {
             swipePositionAnimation?.completionBlock = {
                 (_, _) in
                 self.removeFromSuperview()
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + cardSwipeActionAnimationDuration/3) {
                 completionHandler()
             }
             

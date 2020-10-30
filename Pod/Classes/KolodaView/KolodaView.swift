@@ -117,8 +117,8 @@ open class KolodaView: UIView, DraggableCardDelegate {
     
     public var isLoop = false
     
-    private(set) public var currentCardIndex = 0
-    private(set) public var countOfCards = 0
+    public var currentCardIndex = 0
+    public var countOfCards = 0
     
     public weak var dataSource: KolodaViewDataSource? {
         didSet {
@@ -353,10 +353,12 @@ open class KolodaView: UIView, DraggableCardDelegate {
                 
                 _self.animationSemaphore.decrement()
                 
-                for index in 1..<_self.visibleCards.count {
-                    let card = _self.visibleCards[index]
-                    if _self.shouldTransparentizeNextCard {
-                        card.alpha = index == 0 ? _self.alphaValueOpaque : _self.alphaValueSemiTransparent
+                if _self.visibleCards.count > 1 {
+                    for index in 1..<_self.visibleCards.count {
+                        let card = _self.visibleCards[index]
+                        if _self.shouldTransparentizeNextCard {
+                            card.alpha = index == 0 ? _self.alphaValueOpaque : _self.alphaValueSemiTransparent
+                        }
                     }
                 }
             }
@@ -598,12 +600,7 @@ open class KolodaView: UIView, DraggableCardDelegate {
         guard let numberOfCards = dataSource?.kolodaNumberOfCards(self), numberOfCards > 0 else {
             countOfCards = 0
             clear()
-            
             return
-        }
-        
-        if currentCardIndex == 0 {
-            clear()
         }
         
         countOfCards = Int(numberOfCards)
